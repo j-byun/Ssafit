@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.UserDao">
+	
+	<!-- 유저 등록 -->
+	<insert id="insertUser" parameterType="User" keyProperty="no" useGeneratedKeys="true">
+		INSERT INTO user (no, id, password, name, email, nickname, exp, age, height, weight)
+		VALUES (#{no}, #{id}, #{password}, #{name}, #{email}, #{nickname}, 0, #{age}, #{height}, #{weight})
+	</insert>
+	
+	<!-- 한명의 유저 정보 가져오기 -->
+	<select id="selectOne" parameterType="int" resultType="User">
+		SELECT *
+		FROM user
+		WHERE no = #{no}
+	</select>
+	
+	<!-- 유저 목록 가져오기 -->
+	<select id="selectAll" resultType="User">
+		SELECT *
+		FROM user;
+	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateUser" parameterType="User">
+		UPDATE user
+		SET
+		password = #{password},
+		age = #{age},
+		height = #{height},
+		weight = #{weight}
+		WHERE no = #{no}
+	</update>
+	
+	<!-- 유저 경험치 증가시키기 -->
+	<update id="updateExp" parameterType="User">
+		UPDATE user
+		SET
+		exp = exp + #{exp}
+		WHERE no = #{no}
+	</update>
+	
+	<!-- 유저 삭제 -->
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user WHERE no = #{no}
+	</delete>
+	
+	<!-- 내가 팔로우 한 / 나를 팔로우 한 유저 정보 가져오기 -->
+	<select id="selectFollowList" parameterType="java.util.HashMap" resultType="User">
+		SELECT u.no, id, password, name, email, nickname, exp, age, height, weight
+		FROM user u
+		JOIN `follow` f
+		<if test="mode.equals('follower')">
+			ON f.followee = u.no
+			WHERE f.follower = #{userNo}
+		</if>
+		<if test="mode.equals('followee')">
+			ON f.follower = u.no
+			WHERE f.followee = #{userNo}
+		</if>
+	</select>
+	
+</mapper>

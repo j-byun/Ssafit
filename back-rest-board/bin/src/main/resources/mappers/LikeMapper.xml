@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.LikeDao">
+	
+	<resultMap type="Like" id="likeMap">
+		<result column="no" property="no" />
+		<result column="user_no" property="userNo" />
+		<result column="video_no" property="videoNo" />
+		<result column="like_date" property="likeDate" />
+	</resultMap>
+		
+	<!-- 좋아요 등록하기 -->
+	<insert id="insertLike" parameterType="Like" keyProperty="no" useGeneratedKeys="true">
+		INSERT INTO `like` (no, user_no, video_no, like_date)
+		VALUES (#{no}, #{userNo}, #{videoNo}, NOW())
+	</insert>
+
+	<!-- 좋아요 삭제하기 -->
+	<delete id="deleteLike" parameterType="Like">
+		DELETE FROM `like` WHERE user_no = #{userNo} AND video_no = #{videoNo}
+	</delete>
+
+</mapper>

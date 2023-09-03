@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.FollowDao">
+	
+	<resultMap type="Follow" id="followMap">
+		<result column="no" property="no" />
+		<result column="followee" property="followee" />
+		<result column="follower" property="follower" />
+		<result column="follow_date" property="followDate" />
+	</resultMap>
+		
+	<!-- 팔로우 추가하기 -->
+	<insert id="insertFollow" parameterType="Follow" keyProperty="no" useGeneratedKeys="true">
+		INSERT INTO `follow` (no, followee, follower, follow_date)
+		VALUES (#{no}, #{followee}, #{follower}, NOW())
+	</insert>
+
+	<!-- 팔로우 삭제하기 -->
+	<delete id="deleteFollow" parameterType="Follow">
+		DELETE FROM `follow` WHERE followee = #{followee} AND follower = #{follower}
+	</delete>
+
+</mapper>
